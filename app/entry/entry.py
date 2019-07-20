@@ -23,11 +23,14 @@ class ModelEntry(Entry):
         self.config = ConfigTool.get_current_config(self.config, __class__)
 
     def run(self):
+        gpu_device = self.config.get("gpu_device")
+        gpu_faction = self.config.get("gpu_fraction")
         train_data_path = self.config.get("train_data_path")
         model_path = self.config.get("model_path")
         data_loader = DataLoader(train_data_path)
         input_shape, x_train, x_test, y_train, y_test = data_loader.load_data()
         model_builder = ModelBuilder()
+        model_builder.init_resource(gpu_device, gpu_faction)
         model_builder.init_input(input_shape, x_train, x_test, y_train, y_test)
         model_builder.init_output(model_path)
         model_builder.build()

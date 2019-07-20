@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import os
+
 __author__ = "han"
 
+import tensorflow as tf
 from tensorflow import keras
+import keras.backend.tensorflow_backend as KTF
 
 
 class ModelBuilder(object):
@@ -13,6 +17,7 @@ class ModelBuilder(object):
     epochs = 1
 
     def __init__(self):
+        self.gpu_device = None
         self.input_shape = None
         self.x_train = None
         self.y_train = None
@@ -20,6 +25,20 @@ class ModelBuilder(object):
         self.y_test = None
         self.model_path = None
         self.model = None
+
+    def init_resource(self, gpu_device=None, gpu_fraction=None):
+        """
+        功能：初始化训练所需设备信息
+        :param gpu_device: 显卡编号，如“0”，“0,1”
+        :param gpu_fraction:显存使用率
+        :return:
+        """
+        if isinstance(gpu_device, str):
+            os.environ["CUDA_VISIBLE_DEVICES"] = gpu_device
+        if isinstance(gpu_fraction, (float, int)):
+            config = tf.ConfigProto()
+            config.gpu_options.per_process_gpu_memory_fraction = gpu_fraction
+            KTF.set_session(tf.Session(config=config))
 
     def init_input(self, input_shape, x_train, x_test, y_train, y_test):
         self.input_shape = input_shape
