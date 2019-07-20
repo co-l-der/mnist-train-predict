@@ -1,6 +1,8 @@
 
 **简要描述：**
 
+项目套用之前only-run-demo模板，实现ModelEntry和ClientEntry逻辑
+
 1. 使用keras搭建cnn模型（2层卷积层+2层全连接层）,识别手写字
 
 2. ClientEntry中实现了使用测试集进行批量手写字识别
